@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">DjangoApp</a>
+            <div>
+                <a class="nav-link d-inline text-light" href="#">Home</a>
+                <a class="nav-link d-inline text-light" href="#">About</a>
+                <a class="nav-link d-inline text-light" href="#">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Welcome to My Django Project</h1>
+        <p class="text-center">This is a basic template that can be extended for further functionalities.</p>
+        
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title text-center">Weather Information</h5>
+                <p class="text-center">Enter a city to get weather updates.</p>
+                
+                <form id="weather-form" class="text-center">
+                    <div class="mb-3">
+                        <input type="text" id="city" name="city" class="form-control" placeholder="Enter city" value="Tokyo">
+                    </div>
+                    <button type="button" id="get-weather" class="btn btn-primary">Get Weather</button>
+                </form>
+
+                <div id="weather-result" class="mt-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-light text-center py-3 mt-5">
+        © 2024 DjangoApp. All rights reserved.
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            $('#get-weather').click(function() {
+                const city = $('#city').val();
+                $.get('/weather_api/', { city: city }, function(data) {
+                    if (data.error) {
+                        $('#weather-result').html(`<div class="alert alert-danger">Error: ${data.error}</div>`);
+                    } else {
+                        $('#weather-result').html(`
+                            <div class="alert alert-success">
+                                <p><strong>City:</strong> ${data.city}</p>
+                                <p><strong>Temperature:</strong> ${data.temperature} °C</p>
+                                <p><strong>Condition:</strong> ${data.condition}</p>
+                            </div>
+                        `);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
